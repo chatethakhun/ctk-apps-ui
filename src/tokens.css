@@ -1,0 +1,57 @@
+/*
+  CTK Apps design tokens.
+  Import this once at your app root (see README "Theming") so the dark-theme
+  override block below is in scope. Every component also ships hard-coded
+  fallback values for each var(), so the components still render correctly
+  in light mode even if you skip this import entirely — importing it only
+  buys you dark mode + the ability to re-theme by overriding these vars.
+*/
+
+:root {
+  --ctk-bg: #f6f3ee;
+  --ctk-bg-soft: #ffffff;
+  --ctk-ink: #2b2740;
+  --ctk-ink-soft: #5c5675;
+  --ctk-panel-ink: #1a1725;
+  --ctk-panel-ink-tint: rgba(26, 23, 37, 0.1);
+  --ctk-dot-color: rgba(26, 23, 37, 0.55);
+
+  --ctk-accent: #7c5cff;
+  --ctk-accent-soft: #efe9ff;
+  --ctk-danger: #ff5a7a;
+  --ctk-danger-soft: #ffe7ec;
+
+  --ctk-font-display: 'Bangers', 'Kanit', sans-serif;
+  --ctk-font-body: 'Poppins', 'Kanit', 'Noto Sans Thai', 'Segoe UI', system-ui, sans-serif;
+  --ctk-font-mono: 'JetBrains Mono', monospace;
+
+  --ctk-radius-panel: 4px;
+  --ctk-radius-card: 6px;
+  --ctk-radius-pill: 999px;
+}
+
+[data-ctk-theme='dark'] {
+  --ctk-bg: #19172a;
+  --ctk-bg-soft: #221f38;
+  --ctk-ink: #f3f1fb;
+  --ctk-ink-soft: #b7b1d6;
+  --ctk-panel-ink: #f3f1fb;
+  --ctk-panel-ink-tint: rgba(243, 241, 251, 0.14);
+  --ctk-dot-color: rgba(243, 241, 251, 0.4);
+  --ctk-accent-soft: rgba(124, 92, 255, 0.18);
+  --ctk-danger-soft: rgba(255, 90, 122, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-ctk-theme='light']) {
+    --ctk-bg: #19172a;
+    --ctk-bg-soft: #221f38;
+    --ctk-ink: #f3f1fb;
+    --ctk-ink-soft: #b7b1d6;
+    --ctk-panel-ink: #f3f1fb;
+    --ctk-panel-ink-tint: rgba(243, 241, 251, 0.14);
+    --ctk-dot-color: rgba(243, 241, 251, 0.4);
+    --ctk-accent-soft: rgba(124, 92, 255, 0.18);
+    --ctk-danger-soft: rgba(255, 90, 122, 0.18);
+  }
+}

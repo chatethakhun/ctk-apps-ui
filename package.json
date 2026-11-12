@@ -1,0 +1,63 @@
+{
+  "name": "@ctk-apps/ui",
+  "version": "0.1.0",
+  "description": "CTK Apps comic-panel UI components — framework-agnostic Web Components built with Lit. Works in React, Vue, and plain HTML.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jack",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/ctk-ui.js",
+  "module": "./dist/ctk-ui.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/ctk-ui.js"
+    },
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": [
+    "./dist/ctk-ui.js"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.json --emitDeclarationOnly && vite build && node -e \"require('fs').copyFileSync('src/tokens.css','dist/tokens.css')\"",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "10.6.5",
+    "@storybook/addon-mcp": "10.6.5",
+    "@storybook/addon-vitest": "^10.6.5",
+    "@storybook/web-components": "10.6.5",
+    "@storybook/web-components-vite": "10.6.5",
+    "@vitest/browser-playwright": "^5.1.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "playwright": "^1.65.0",
+    "storybook": "10.6.5",
+    "typescript": "^5.7.2",
+    "vite": "^7.3.8",
+    "vitest": "^5.1.0"
+  },
+  "keywords": [
+    "web-components",
+    "lit",
+    "design-system",
+    "ui-library",
+    "react",
+    "vue"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctk-apps/ui"
+  }
+}
