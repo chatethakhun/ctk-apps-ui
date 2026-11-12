@@ -24,3 +24,8 @@ export * from './components/progress.js';
 export * from './components/breadcrumb.js';
 export * from './components/accordion.js';
 export * from './components/avatar.js';
+export * from './components/tooltip.js';
+export * from './components/input-search.js';
+export * from './components/skeleton.js';
+export * from './components/empty-state.js';
+export * from './components/file-upload.js';
