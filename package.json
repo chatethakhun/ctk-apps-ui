@@ -1,6 +1,6 @@
 {
   "name": "@ctk-apps/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CTK Apps comic-panel UI components — framework-agnostic Web Components built with Lit. Works in React, Vue, and plain HTML.",
   "type": "module",
   "license": "MIT",
