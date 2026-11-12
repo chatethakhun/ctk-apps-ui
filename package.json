@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.json --emitDeclarationOnly && vite build && node -e \"require('fs').copyFileSync('src/tokens.css','dist/tokens.css')\"",
+    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly && node -e \"require('fs').copyFileSync('src/tokens.css','dist/tokens.css')\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepublishOnly": "npm run build"
@@ -58,6 +58,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chatethakhun/ctk-apps-ui.git"
+    "url": "git+https://github.com/chatethakhun/ctk-apps-ui.git"
   }
 }
