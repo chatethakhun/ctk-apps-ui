@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write # required for npm provenance
 
 jobs:
   publish:
@@ -41,6 +40,6 @@ jobs:
 
       # prepublishOnly runs `npm run build` automatically
       - name: Publish
-        run: npm publish --provenance --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
