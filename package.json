@@ -22,7 +22,8 @@
     "access": "public"
   },
   "sideEffects": [
-    "./dist/ctk-ui.js"
+    "./dist/ctk-ui.js",
+    "./src/**"
   ],
   "scripts": {
     "dev": "vite",
