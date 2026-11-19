@@ -28,6 +28,12 @@
   --ctk-radius-panel: 4px;
   --ctk-radius-card: 6px;
   --ctk-radius-pill: 999px;
+
+  /* Motion. Keep in sync with src/motion.ts. */
+  --ctk-motion-enter: 200ms;
+  --ctk-motion-exit: 140ms;
+  --ctk-motion-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ctk-motion-ease-exit: ease-in;
 }
 
 [data-ctk-theme='dark'] {

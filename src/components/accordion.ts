@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { ENTER_MS, prefersReducedMotion } from '../motion.js';
 
 /**
  * `<ctk-accordion>` — a stack of collapsible sections. Put native
@@ -66,9 +67,20 @@ export class CtkAccordion extends LitElement {
   }
 
   #onToggle = (e: Event) => {
-    if (!this.exclusive) return;
     const target = e.target as HTMLDetailsElement;
     if (target.tagName !== 'DETAILS' || !target.open) return;
+    // Native <details> closes instantly, so only the opening gets motion:
+    // the section eases in as it opens.
+    if (!prefersReducedMotion()) {
+      target.animate(
+        [
+          { opacity: 0, transform: 'translateY(-6px)' },
+          { opacity: 1, transform: 'translateY(0)' },
+        ],
+        { duration: ENTER_MS, easing: 'ease-out' },
+      );
+    }
+    if (!this.exclusive) return;
     this.querySelectorAll<HTMLDetailsElement>(':scope > details').forEach((d) => {
       if (d !== target) d.open = false;
     });

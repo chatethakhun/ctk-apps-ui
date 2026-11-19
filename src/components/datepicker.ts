@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { setPresence } from '../motion.js';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -38,6 +39,9 @@ function fmtShort(d: Date) {
 @customElement('ctk-datepicker')
 export class CtkDatepicker extends LitElement {
   static styles = css`
+    [hidden] {
+      display: none !important;
+    }
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -275,6 +279,12 @@ export class CtkDatepicker extends LitElement {
   @state() private _viewYear = new Date().getFullYear();
   @state() private _viewMonth = new Date().getMonth();
 
+  updated(changed: Map<string, unknown>) {
+    if (changed.has('_open')) {
+      setPresence(this.renderRoot.querySelector<HTMLElement>('.popup'), this._open);
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener('click', this.#onDocClick);
@@ -315,7 +325,7 @@ export class CtkDatepicker extends LitElement {
             </svg>
           </button>
           <div class="panel-shadow" aria-hidden="true"></div>
-          ${this._open ? this.#renderPopup() : null}
+          ${this.#renderPopup()}
         </div>
         ${this.hint ? html`<span class="hint">${this.hint}</span>` : null}
       </div>
@@ -326,7 +336,7 @@ export class CtkDatepicker extends LitElement {
     const cells = this.#buildGrid();
     const canApply = this.mode === 'single' ? !!this._draftStart : !!(this._draftStart && this._draftEnd);
     return html`
-      <div class="popup" role="dialog">
+      <div class="popup" role="dialog" hidden>
         <div class="head">
           <button type="button" class="nav" aria-label="Previous month" @click=${() => this.#changeMonth(-1)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--ctk-panel-ink, #1a1725)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>

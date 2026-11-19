@@ -35,8 +35,32 @@ export class CtkTooltip extends LitElement {
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.12s ease, visibility 0.12s ease;
+      transform: translate(-50%, 4px) scale(0.92);
+      transition:
+        opacity var(--ctk-motion-exit, 140ms) ease-in,
+        transform var(--ctk-motion-exit, 140ms) ease-in,
+        visibility var(--ctk-motion-exit, 140ms);
       z-index: 200;
+    }
+    .bubble.top {
+      transform: translate(-50%, -4px) scale(0.92);
+    }
+    .bubble.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0) scale(1);
+      transition:
+        opacity var(--ctk-motion-enter, 200ms) ease-out,
+        transform var(--ctk-motion-enter, 200ms) var(--ctk-motion-ease-pop, cubic-bezier(0.34, 1.56, 0.64, 1)),
+        visibility 0s;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bubble,
+      .bubble.top,
+      .bubble.show {
+        transform: translate(-50%, 0);
+        transition: opacity var(--ctk-motion-enter, 200ms) linear, visibility 0s;
+      }
     }
     :host([placement='top']) .bubble,
     .bubble.top {

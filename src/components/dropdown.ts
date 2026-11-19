@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { setPresence } from '../motion.js';
 
 /**
  * `<ctk-dropdown>` — a trigger button that opens a menu of actions.
@@ -19,6 +20,9 @@ export class CtkDropdown extends LitElement {
       display: inline-block;
       position: relative;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
+    }
+    [hidden] {
+      display: none !important;
     }
     .trigger {
       all: unset;
@@ -59,7 +63,7 @@ export class CtkDropdown extends LitElement {
       margin: 0;
       padding: 6px;
       list-style: none;
-      display: none;
+      display: flex;
       flex-direction: column;
       gap: 2px;
       background: var(--ctk-bg-soft, #ffffff);
@@ -67,9 +71,6 @@ export class CtkDropdown extends LitElement {
       border-radius: var(--ctk-radius-card, 6px);
       box-shadow: 4px 4px 0 var(--ctk-panel-ink, #1a1725);
       z-index: 100;
-    }
-    .menu.open {
-      display: flex;
     }
     ::slotted([role='menuitem']) {
       all: unset;
@@ -123,7 +124,8 @@ export class CtkDropdown extends LitElement {
   #openMenu(focusFirst = false) {
     if (this.disabled) return;
     this.open = true;
-    if (focusFirst) this.#setActive(0);
+    // The menu is unhidden in updated(), so wait for that before focusing.
+    if (focusFirst) this.updateComplete.then(() => this.#setActive(0));
   }
 
   #close(returnFocus = true) {
@@ -208,8 +210,9 @@ export class CtkDropdown extends LitElement {
         </svg>
       </button>
       <div
-        class="menu ${this.open ? 'open' : ''}"
+        class="menu"
         role="menu"
+        hidden
         @keydown=${this.#onMenuKey}
         @click=${(e: Event) => {
           const item = (e.target as HTMLElement).closest<HTMLElement>('[role="menuitem"]');
@@ -219,6 +222,12 @@ export class CtkDropdown extends LitElement {
         <slot></slot>
       </div>
     `;
+  }
+
+  updated(changed: Map<string, unknown>) {
+    if (changed.has('open')) {
+      setPresence(this.renderRoot.querySelector<HTMLElement>('.menu'), this.open);
+    }
   }
 }
 

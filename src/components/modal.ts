@@ -30,6 +30,45 @@ export class CtkModal extends LitElement {
     dialog::backdrop {
       background: rgba(26, 23, 37, 0.55);
     }
+    /* The native <dialog> is removed from the top layer on close(), so the
+       exit runs first (class .closing) and close() is called when it ends. */
+    dialog[open] {
+      animation: ctk-modal-in var(--ctk-motion-enter, 200ms) var(--ctk-motion-ease-pop, cubic-bezier(0.34, 1.56, 0.64, 1));
+    }
+    dialog[open]::backdrop {
+      animation: ctk-fade-in var(--ctk-motion-enter, 200ms) ease-out;
+    }
+    dialog.closing {
+      animation: ctk-modal-out var(--ctk-motion-exit, 140ms) var(--ctk-motion-ease-exit, ease-in) forwards;
+    }
+    dialog.closing::backdrop {
+      animation: ctk-fade-out var(--ctk-motion-exit, 140ms) ease-in forwards;
+    }
+    @keyframes ctk-modal-in {
+      from { opacity: 0; transform: scale(0.92); }
+      70% { opacity: 1; transform: scale(1.03); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes ctk-modal-out {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.94); }
+    }
+    @keyframes ctk-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes ctk-fade-out {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      dialog[open] {
+        animation-name: ctk-fade-in;
+      }
+      dialog.closing {
+        animation-name: ctk-fade-out;
+      }
+    }
     header {
       display: flex;
       align-items: center;
@@ -83,9 +122,10 @@ export class CtkModal extends LitElement {
   updated(changed: Map<string, unknown>) {
     if (!changed.has('open') || !this.dialog) return;
     if (this.open && !this.dialog.open) {
+      this.dialog.classList.remove('closing');
       this.dialog.showModal();
     } else if (!this.open && this.dialog.open) {
-      this.dialog.close();
+      this.#animateClose();
     }
   }
 
@@ -94,6 +134,7 @@ export class CtkModal extends LitElement {
       <dialog
         aria-labelledby="heading"
         @close=${this.#onNativeClose}
+        @cancel=${this.#onCancel}
         @click=${this.#onBackdropClick}
       >
         <header>
@@ -111,9 +152,35 @@ export class CtkModal extends LitElement {
   }
 
   #onNativeClose() {
-    // Covers Escape, which the browser closes natively.
     if (this.open) this.open = false;
     this.dispatchEvent(new CustomEvent('ctk-close', { bubbles: true, composed: true }));
+  }
+
+  #onCancel(e: Event) {
+    // Escape would close the dialog at once. Stop that so the exit animation
+    // plays, and let `open = false` drive the actual close.
+    e.preventDefault();
+    this.#close();
+  }
+
+  #animateClose() {
+    const dialog = this.dialog;
+    let done = false;
+    const onEnd = (e: Event) => {
+      // Children can run their own animations, so only the dialog's counts.
+      if (e.target === dialog) finish();
+    };
+    const finish = () => {
+      if (done) return;
+      done = true;
+      dialog.removeEventListener('animationend', onEnd);
+      dialog.classList.remove('closing');
+      dialog.close();
+    };
+    dialog.classList.add('closing');
+    dialog.addEventListener('animationend', onEnd);
+    // Fallback in case animationend never fires (e.g. the element is hidden).
+    window.setTimeout(finish, 300);
   }
 
   #onBackdropClick(e: MouseEvent) {

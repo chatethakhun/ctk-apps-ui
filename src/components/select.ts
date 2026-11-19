@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { setPresence } from '../motion.js';
 
 export interface CtkSelectOption {
   value: string;
@@ -108,6 +109,9 @@ export class CtkSelect extends LitElement {
       background-size: 5px 5px;
       border-radius: 6px;
     }
+    [hidden] {
+      display: none !important;
+    }
     .listbox {
       list-style: none;
       margin: 0;
@@ -191,7 +195,7 @@ export class CtkSelect extends LitElement {
             </svg>
           </button>
           <div class="panel-shadow" aria-hidden="true"></div>
-          <ul class="listbox" role="listbox" ?hidden=${!this._open}>
+          <ul class="listbox" role="listbox" hidden>
             ${this.options.map(
               (opt) => html`
                 <li
@@ -212,6 +216,12 @@ export class CtkSelect extends LitElement {
         ${this.hint ? html`<span class="hint">${this.hint}</span>` : null}
       </div>
     `;
+  }
+
+  updated(changed: Map<string, unknown>) {
+    if (changed.has('_open')) {
+      setPresence(this.renderRoot.querySelector<HTMLElement>('.listbox'), this._open);
+    }
   }
 
   #toggle(e: Event) {

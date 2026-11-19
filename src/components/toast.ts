@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { playEnter, playExit } from '../motion.js';
 
 export type CtkToastVariant = 'info' | 'success' | 'warning' | 'danger';
 
@@ -17,11 +18,6 @@ export class CtkToast extends LitElement {
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
-      animation: pop-in 0.18s ease-out;
-    }
-    @keyframes pop-in {
-      from { opacity: 0; transform: translateY(8px) scale(0.97); }
-      to { opacity: 1; transform: none; }
     }
     .toast {
       display: flex;
@@ -71,10 +67,11 @@ export class CtkToast extends LitElement {
   @property({ type: Number }) duration = 4000;
 
   #timer?: number;
+  #dismissing = false;
 
   connectedCallback() {
     super.connectedCallback();
-    if (this.duration > 0) {
+    if (this.duration > 0 && !this.#dismissing) {
       this.#timer = window.setTimeout(() => this.dismiss(), this.duration);
     }
   }
@@ -82,6 +79,13 @@ export class CtkToast extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     window.clearTimeout(this.#timer);
+  }
+
+  firstUpdated() {
+    // The toast is appended to a region outside any Lit template, so the
+    // `animate` directive cannot drive its removal. Play the same keyframes
+    // directly and remove the node once the exit finishes.
+    playEnter(this);
   }
 
   render() {
@@ -95,9 +99,13 @@ export class CtkToast extends LitElement {
   }
 
   dismiss = () => {
+    if (this.#dismissing) return;
+    this.#dismissing = true;
     window.clearTimeout(this.#timer);
-    this.remove();
-    this.dispatchEvent(new CustomEvent('ctk-dismiss', { bubbles: true, composed: true }));
+    playExit(this).then(() => {
+      this.remove();
+      this.dispatchEvent(new CustomEvent('ctk-dismiss', { bubbles: true, composed: true }));
+    });
   };
 }
 
