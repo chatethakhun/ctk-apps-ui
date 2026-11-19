@@ -34,38 +34,43 @@ const POP_OUT: Keyframe[] = [
 ];
 const FADE_IN: Keyframe[] = [{ opacity: 0 }, { opacity: 1 }];
 const FADE_OUT: Keyframe[] = [{ opacity: 1 }, { opacity: 0 }];
+const SLIDE_LEFT_IN: Keyframe[] = [{ transform: 'translateX(-100%)' }, { transform: 'translateX(0)' }];
+const SLIDE_LEFT_OUT: Keyframe[] = [{ transform: 'translateX(0)' }, { transform: 'translateX(-100%)' }];
+export const SLIDE_EASING = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
+
+/**
+ * - `pop`: scale with overshoot (modals, menus, popovers).
+ * - `slide-left`: slide in from the left edge (drawers).
+ * - `fade`: opacity only (backdrops).
+ * Under reduced motion every variant becomes a plain fade.
+ */
+export type PresenceVariant = 'pop' | 'slide-left' | 'fade';
 
 const running = new WeakMap<HTMLElement, Animation>();
 
 /**
- * Shows or hides an element with the comic pop. The element must carry the
+ * Shows or hides an element with the given variant. The element must carry the
  * `hidden` attribute in its markup (so it starts hidden) and must not bind
  * `hidden` through Lit, or Lit will hide it before the exit can play.
  */
-export function setPresence(el: HTMLElement | null | undefined, open: boolean): void {
+export function setPresence(el: HTMLElement | null | undefined, open: boolean, variant: PresenceVariant = 'pop'): void {
   if (!el) return;
   running.get(el)?.cancel();
   running.delete(el);
   const reduced = prefersReducedMotion();
+  const inFrames = reduced || variant === 'fade' ? FADE_IN : variant === 'slide-left' ? SLIDE_LEFT_IN : POP_IN;
+  const outFrames = reduced || variant === 'fade' ? FADE_OUT : variant === 'slide-left' ? SLIDE_LEFT_OUT : POP_OUT;
+  const easeIn = reduced ? 'linear' : variant === 'slide-left' ? SLIDE_EASING : POP_EASING;
+  const easeOut = variant === 'slide-left' && !reduced ? 'ease-in' : EXIT_EASING;
 
   if (open) {
     el.hidden = false;
-    running.set(
-      el,
-      el.animate(reduced ? FADE_IN : POP_IN, {
-        duration: ENTER_MS,
-        easing: reduced ? 'linear' : POP_EASING,
-      }),
-    );
+    running.set(el, el.animate(inFrames, { duration: ENTER_MS, easing: easeIn }));
     return;
   }
 
   if (el.hidden) return;
-  const anim = el.animate(reduced ? FADE_OUT : POP_OUT, {
-    duration: EXIT_MS,
-    easing: EXIT_EASING,
-    fill: 'forwards',
-  });
+  const anim = el.animate(outFrames, { duration: EXIT_MS, easing: easeOut, fill: 'forwards' });
   running.set(el, anim);
   anim.onfinish = () => {
     running.delete(el);
