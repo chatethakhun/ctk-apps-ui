@@ -7,10 +7,9 @@ const meta: Meta = {
   component: 'ctk-hamburger',
   argTypes: {
     label: { control: 'text' },
-    breakpoint: { control: 'text' },
     open: { control: 'boolean' },
   },
-  args: { label: 'Menu', breakpoint: '720px', open: false },
+  args: { label: 'Menu', open: false },
 };
 export default meta;
 
@@ -18,7 +17,7 @@ type Story = StoryObj;
 
 export const Default: Story = {
   render: (args) => html`
-    <ctk-hamburger label=${args.label} breakpoint=${args.breakpoint} ?open=${args.open}>
+    <ctk-hamburger label=${args.label} ?open=${args.open}>
       <nav style="display:flex;flex-direction:column;gap:12px;font-weight:600">
         <a href="#">Home</a>
         <a href="#">Comics</a>

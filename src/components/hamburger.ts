@@ -1,14 +1,11 @@
 import { LitElement, css, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { setPresence } from '../motion.js';
 
 /**
- * `<ctk-hamburger>` — a menu button that opens a left drawer on narrow
- * screens. Put any content in the default slot; links inside the drawer
- * close it when clicked.
- *
- * The button only shows while the viewport is at or below `breakpoint`.
- * Above it, the button is hidden and the drawer is closed.
+ * `<ctk-hamburger>` — a menu button that opens a left drawer. Put any
+ * content in the default slot; links inside the drawer close it when
+ * clicked.
  *
  * Clicking the backdrop closes the drawer. Escape does not close it.
  *
@@ -98,46 +95,11 @@ export class CtkHamburger extends LitElement {
   @property({ type: Boolean, reflect: true }) open = false;
   /** Accessible name for the button and the drawer. */
   @property() label = 'Menu';
-  /** Button shows at or below this width. Any CSS length. */
-  @property() breakpoint = '720px';
-
-  @state() private narrow = true;
-
-  #mql?: MediaQueryList;
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.#bindMedia();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.#mql?.removeEventListener('change', this.#onMediaChange);
-    this.#mql = undefined;
-  }
-
-  #bindMedia() {
-    this.#mql?.removeEventListener('change', this.#onMediaChange);
-    this.#mql = window.matchMedia(`(max-width: ${this.breakpoint})`);
-    this.#mql.addEventListener('change', this.#onMediaChange);
-    this.#onMediaChange(this.#mql);
-  }
-
-  #onMediaChange = (e: MediaQueryList | MediaQueryListEvent) => {
-    this.narrow = e.matches;
-    // Above the breakpoint there is no button, so never leave the drawer open.
-    if (!e.matches && this.open) this.open = false;
-  };
 
   updated(changed: Map<string, unknown>) {
-    // Rebind when the breakpoint changes after the first render.
-    if (changed.has('breakpoint') && changed.get('breakpoint') !== undefined) this.#bindMedia();
-
-    const drawer = this.renderRoot.querySelector<HTMLElement>('.drawer');
-    const backdrop = this.renderRoot.querySelector<HTMLElement>('.backdrop');
     if (changed.has('open')) {
-      setPresence(drawer, this.open, 'slide-left');
-      setPresence(backdrop, this.open, 'fade');
+      setPresence(this.renderRoot.querySelector<HTMLElement>('.drawer'), this.open, 'slide-left');
+      setPresence(this.renderRoot.querySelector<HTMLElement>('.backdrop'), this.open, 'fade');
       // The first update has no previous value, so skip it.
       if (changed.get('open') !== undefined) {
         this.dispatchEvent(
@@ -155,7 +117,6 @@ export class CtkHamburger extends LitElement {
         aria-label=${this.label}
         aria-expanded=${this.open ? 'true' : 'false'}
         aria-controls="drawer"
-        ?hidden=${!this.narrow}
         @click=${() => (this.open = !this.open)}
       >
         <span class="icon" aria-hidden="true"><span></span><span></span><span></span></span>
