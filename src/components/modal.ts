@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { lockScroll, unlockScroll } from '../scroll-lock.js';
 
 /**
  * `<ctk-modal>` — a dialog panel built on the native `<dialog>`, so focus
@@ -124,6 +125,7 @@ export class CtkModal extends LitElement {
     if (this.open && !this.dialog.open) {
       this.dialog.classList.remove('closing');
       this.dialog.showModal();
+      this.#setScrollLock(true);
     } else if (!this.open && this.dialog.open) {
       this.#animateClose();
     }
@@ -163,6 +165,21 @@ export class CtkModal extends LitElement {
     this.#close();
   }
 
+  #scrollLocked = false;
+
+  #setScrollLock(on: boolean) {
+    if (on === this.#scrollLocked) return;
+    this.#scrollLocked = on;
+    if (on) lockScroll();
+    else unlockScroll();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    // A modal removed while open must still release the page.
+    this.#setScrollLock(false);
+  }
+
   #animateClose() {
     const dialog = this.dialog;
     let done = false;
@@ -176,6 +193,7 @@ export class CtkModal extends LitElement {
       dialog.removeEventListener('animationend', onEnd);
       dialog.classList.remove('closing');
       dialog.close();
+      this.#setScrollLock(false);
     };
     dialog.classList.add('closing');
     dialog.addEventListener('animationend', onEnd);

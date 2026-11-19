@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { setPresence } from '../motion.js';
+import { lockScroll, unlockScroll } from '../scroll-lock.js';
 
 /**
  * `<ctk-hamburger>` — a menu button that opens a left drawer. Put any
@@ -96,8 +97,23 @@ export class CtkHamburger extends LitElement {
   /** Accessible name for the button and the drawer. */
   @property() label = 'Menu';
 
+  #scrollLocked = false;
+
+  #setScrollLock(on: boolean) {
+    if (on === this.#scrollLocked) return;
+    this.#scrollLocked = on;
+    if (on) lockScroll();
+    else unlockScroll();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#setScrollLock(false);
+  }
+
   updated(changed: Map<string, unknown>) {
     if (changed.has('open')) {
+      this.#setScrollLock(this.open);
       setPresence(this.renderRoot.querySelector<HTMLElement>('.drawer'), this.open, 'slide-left');
       setPresence(this.renderRoot.querySelector<HTMLElement>('.backdrop'), this.open, 'fade');
       // The first update has no previous value, so skip it.
