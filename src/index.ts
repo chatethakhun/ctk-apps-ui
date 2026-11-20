@@ -30,3 +30,7 @@ export * from './components/skeleton.js';
 export * from './components/empty-state.js';
 export * from './components/file-upload.js';
 export * from './components/hamburger.js';
+export * from './components/stepper.js';
+export * from './components/number-field.js';
+export * from './components/slider.js';
+export * from './components/step-progress.js';
