@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 export interface CtkSideNavItem {
   label: string;
@@ -13,20 +14,28 @@ export interface CtkSideNavItem {
  * `<ctk-side-nav>` — a vertical icon + label list with an active-state
  * fill, and an optional collapse button that shrinks it to icons-only.
  *
+ * It is up to 220px wide and shrinks with its parent. When the space left
+ * is under 240px, the items turn into a horizontal strip that scrolls.
+ *
  * @fires ctk-nav - detail: `{ label: string; href?: string }`
  * @fires ctk-collapse-change - detail: `{ collapsed: boolean }`
  */
 @customElement('ctk-side-nav')
 export class CtkSideNav extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
-      width: 220px;
-      transition: width 0.15s ease;
+      width: 100%;
+      max-width: 220px;
+      transition: max-width 0.15s ease;
     }
     :host([collapsed]) {
-      width: 64px;
+      max-width: 64px;
+    }
+    .wrap {
+      container-type: inline-size;
     }
     .panel {
       display: flex;
@@ -71,8 +80,11 @@ export class CtkSideNav extends LitElement {
       background-color: rgba(255, 255, 255, 0.25);
     }
     .label {
+      display: block;
+      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
     :host([collapsed]) .label {
       display: none;
@@ -103,6 +115,23 @@ export class CtkSideNav extends LitElement {
     :host([collapsed]) .collapse-btn svg {
       transform: rotate(180deg);
     }
+    @container (max-width: 240px) {
+      .panel {
+        flex-direction: row;
+        overflow-x: auto;
+        scrollbar-width: thin;
+      }
+      a,
+      .collapse-btn {
+        flex: none;
+        white-space: nowrap;
+      }
+      .collapse-btn {
+        margin-top: 0;
+        border-top: 0;
+        border-left: 2px solid var(--ctk-panel-ink-tint, rgba(26, 23, 37, 0.1));
+      }
+    }
   `;
 
   @property({ attribute: false }) items: CtkSideNavItem[] = [];
@@ -111,6 +140,7 @@ export class CtkSideNav extends LitElement {
 
   render() {
     return html`
+      <div class="wrap">
       <div class="panel">
         ${this.items.map(
           (item) => html`
@@ -136,6 +166,7 @@ export class CtkSideNav extends LitElement {
               </button>
             `
           : null}
+      </div>
       </div>
     `;
   }

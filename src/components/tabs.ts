@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 export interface CtkTabItem {
   value: string;
@@ -18,12 +19,17 @@ export interface CtkTabItem {
 @customElement('ctk-tabs')
 export class CtkTabs extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     .segtabs {
       display: inline-flex;
+      max-width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
       gap: 2px;
       background: var(--ctk-bg-soft, #ffffff);
       border: 2.5px solid var(--ctk-panel-ink, #1a1725);
@@ -35,6 +41,8 @@ export class CtkTabs extends LitElement {
       box-sizing: border-box;
       cursor: pointer;
       padding: 7px 16px;
+      flex: none;
+      white-space: nowrap;
       border-radius: var(--ctk-radius-pill, 999px);
       font-weight: 700;
       font-size: 0.82rem;

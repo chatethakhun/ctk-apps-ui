@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { clamp, snapToStep } from '../number-utils.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-stepper>` — a `−` / `+` control for a whole number or step value.
@@ -15,13 +16,16 @@ import { clamp, snapToStep } from '../number-utils.js';
 @customElement('ctk-stepper')
 export class CtkStepper extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       color: var(--ctk-ink, #2b2740);
     }
     .wrap {
       display: inline-flex;
+      max-width: 100%;
       align-items: center;
       gap: 8px;
       outline: none;

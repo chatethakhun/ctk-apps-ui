@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ENTER_MS, prefersReducedMotion } from '../motion.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-accordion>` — a stack of collapsible sections. Put native
@@ -12,6 +13,7 @@ import { ENTER_MS, prefersReducedMotion } from '../motion.js';
 @customElement('ctk-accordion')
 export class CtkAccordion extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -41,6 +43,8 @@ export class CtkAccordion extends LitElement {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      min-width: 0;
     }
     ::slotted(summary:focus-visible) {
       outline: 2px solid var(--ctk-accent, #7c5cff);

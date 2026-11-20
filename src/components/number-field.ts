@@ -1,6 +1,7 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { clamp, snapToStep } from '../number-utils.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-number-field>` — a labelled numeric text input with optional `−` /
@@ -14,8 +15,10 @@ import { clamp, snapToStep } from '../number-utils.js';
 @customElement('ctk-number-field')
 export class CtkNumberField extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       color: var(--ctk-ink, #2b2740);
     }
@@ -27,6 +30,7 @@ export class CtkNumberField extends LitElement {
     }
     .row {
       display: inline-flex;
+      max-width: 100%;
       align-items: stretch;
       border: 2.5px solid var(--ctk-panel-ink, #1a1725);
       border-radius: var(--ctk-radius-pill, 999px);
@@ -40,6 +44,8 @@ export class CtkNumberField extends LitElement {
     input {
       box-sizing: border-box;
       width: 100px;
+      min-width: 0;
+      flex: 0 1 100px;
       padding: 8px 12px;
       border: 0;
       outline: none;

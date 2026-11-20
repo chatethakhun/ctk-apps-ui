@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-spinner>` — an indeterminate loading indicator. Announces its
@@ -8,6 +9,7 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-spinner')
 export class CtkSpinner extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
     }

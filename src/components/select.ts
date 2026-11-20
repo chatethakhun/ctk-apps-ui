@@ -1,6 +1,7 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { setPresence } from '../motion.js';
+import { baseStyles } from '../shared-styles.js';
 
 export interface CtkSelectOption {
   value: string;
@@ -22,6 +23,7 @@ export interface CtkSelectOption {
 @customElement('ctk-select')
 export class CtkSelect extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -30,6 +32,7 @@ export class CtkSelect extends LitElement {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      min-width: 0;
     }
     label {
       font-weight: 700;
@@ -75,6 +78,11 @@ export class CtkSelect extends LitElement {
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+    /* Long selected labels end in an ellipsis instead of growing the trigger. */
+    .current > span:last-child {
       min-width: 0;
       overflow: hidden;
       white-space: nowrap;

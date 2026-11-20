@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-empty-state>` — shown when a list or page has nothing to display.
@@ -12,10 +13,20 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-empty-state')
 export class CtkEmptyState extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       color: var(--ctk-ink, #2b2740);
+    }
+    @container (max-width: 300px) {
+      .wrap {
+        padding: 20px 14px;
+      }
+      h3 {
+        font-size: 1.3rem;
+      }
     }
     .wrap {
       display: flex;

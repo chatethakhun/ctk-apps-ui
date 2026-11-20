@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/web-components-vite';
+import { INITIAL_VIEWPORTS } from 'storybook/viewport';
 import '../src/tokens.css';
 import '../src/index.ts';
 
@@ -18,6 +19,12 @@ const preview: Preview = {
   parameters: {
     backgrounds: { disabled: true },
     controls: { expanded: true },
+    // Every story can be previewed at phone, tablet and desktop widths from
+    // the viewport toolbar. Components respond to their own container width,
+    // so a narrow viewport also shows the narrow layouts.
+    viewport: {
+      options: INITIAL_VIEWPORTS,
+    },
   },
 
   globalTypes: {

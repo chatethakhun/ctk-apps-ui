@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-button>` — the "Open app" CTA chip. A pill filled with a solid
@@ -22,14 +23,20 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-button')
 export class CtkButton extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
+      max-width: 100%;
     }
     button {
       all: unset;
       box-sizing: border-box;
       display: inline-flex;
+      max-width: 100%;
       align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.3;
       gap: 6px;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       font-size: 0.78rem;

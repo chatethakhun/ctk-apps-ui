@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-skeleton>` — a placeholder block shown while content loads.
@@ -9,6 +10,7 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-skeleton')
 export class CtkSkeleton extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
       max-width: 100%;

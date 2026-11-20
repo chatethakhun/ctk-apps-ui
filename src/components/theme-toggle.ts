@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 const STORAGE_KEY = 'ctk-ui-theme';
 
@@ -15,9 +16,11 @@ const STORAGE_KEY = 'ctk-ui-theme';
 @customElement('ctk-theme-toggle')
 export class CtkThemeToggle extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
       position: relative;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     .shadow {

@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-card>` — a comic-panel card: thick `panel-ink` border, a halftone
@@ -17,9 +18,24 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-card')
 export class CtkCard extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
+    }
+    /* Narrow cards: shrink the stage and padding so the text keeps room. */
+    @container (max-width: 260px) {
+      .card {
+        padding: 12px;
+      }
+      .stage {
+        height: 96px;
+      }
+      ::slotted([slot='illustration']) {
+        width: 72px;
+        height: 72px;
+      }
     }
     .wrap {
       position: relative;

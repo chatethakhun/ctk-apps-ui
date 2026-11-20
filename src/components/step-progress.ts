@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-step-progress>` — shows where the user is in a multi-step flow, for
@@ -12,8 +13,10 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-step-progress')
 export class CtkStepProgress extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       color: var(--ctk-ink, #2b2740);
     }

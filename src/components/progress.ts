@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-progress>` — a determinate progress bar. Set `value` (and `max`,
@@ -9,6 +10,7 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-progress')
 export class CtkProgress extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -16,6 +18,7 @@ export class CtkProgress extends LitElement {
     .meta {
       display: flex;
       justify-content: space-between;
+      gap: 8px;
       margin-bottom: 6px;
       font-size: 0.8rem;
       font-weight: 700;

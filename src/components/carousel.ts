@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-carousel>` — a horizontal slide deck. Slides are the element's
@@ -14,8 +15,10 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 @customElement('ctk-carousel')
 export class CtkCarousel extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       color: var(--ctk-ink, #2b2740);
     }

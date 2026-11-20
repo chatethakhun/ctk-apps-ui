@@ -1,7 +1,9 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 const fieldStyles = css`
+  ${baseStyles}
   :host {
     display: block;
     font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -10,6 +12,7 @@ const fieldStyles = css`
     display: flex;
     flex-direction: column;
     gap: 6px;
+    min-width: 0;
   }
   label {
     font-weight: 700;

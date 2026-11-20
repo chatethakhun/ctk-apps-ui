@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-avatar>` — a round profile image. Shows `initials` when there is
@@ -8,8 +9,10 @@ import { customElement, property, state } from 'lit/decorators.js';
 @customElement('ctk-avatar')
 export class CtkAvatar extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
+      max-width: 100%;
       --size: 40px;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
@@ -22,6 +25,7 @@ export class CtkAvatar extends LitElement {
     .avatar {
       width: var(--size);
       height: var(--size);
+      flex: none;
       box-sizing: border-box;
       border: 2.5px solid var(--ctk-panel-ink, #1a1725);
       border-radius: 50%;

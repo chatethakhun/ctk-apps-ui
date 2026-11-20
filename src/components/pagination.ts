@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-pagination>` — deliberately minimal: a Prev button, the current
@@ -10,14 +11,18 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-pagination')
 export class CtkPagination extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-flex;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     .paginate {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 14px;
+      justify-content: center;
+      gap: 10px 14px;
     }
     .paginate-btn {
       all: unset;

@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { playEnter, playExit } from '../motion.js';
+import { baseStyles } from '../shared-styles.js';
 
 export type CtkToastVariant = 'info' | 'success' | 'warning' | 'danger';
 
@@ -15,16 +16,19 @@ export type CtkToastVariant = 'info' | 'success' | 'warning' | 'danger';
 @customElement('ctk-toast')
 export class CtkToast extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      max-width: 100%;
+      pointer-events: auto;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     .toast {
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      min-width: 240px;
-      max-width: 360px;
+      min-width: min(240px, calc(100vw - 32px));
+      max-width: min(360px, calc(100vw - 32px));
       padding: 12px 14px;
       border: 2.5px solid var(--ctk-panel-ink, #1a1725);
       border-radius: var(--ctk-radius-card, 6px);
@@ -48,6 +52,7 @@ export class CtkToast extends LitElement {
     :host([variant='danger']) .dot { background: var(--ctk-danger, #ff5a7a); }
     .message {
       flex: 1;
+      min-width: 0;
     }
     .close {
       all: unset;
@@ -125,8 +130,11 @@ export function showToast(
       position: 'fixed',
       top: '16px',
       right: '16px',
+      left: '16px',
       display: 'flex',
       flexDirection: 'column',
+      alignItems: 'flex-end',
+      pointerEvents: 'none',
       gap: '10px',
       zIndex: '1000',
     });

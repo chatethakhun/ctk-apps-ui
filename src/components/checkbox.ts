@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-checkbox>` — thick outline, fills with an accent color when
@@ -10,14 +11,18 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-checkbox')
 export class CtkCheckbox extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     label {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      max-width: 100%;
       gap: 10px;
+      line-height: 1.4;
       font-size: 0.88rem;
       cursor: pointer;
       color: var(--ctk-ink, #2b2740);

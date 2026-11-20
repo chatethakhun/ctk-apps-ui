@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-file-upload>` — a dropzone that accepts files by drag-and-drop or
@@ -12,9 +13,22 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 @customElement('ctk-file-upload')
 export class CtkFileUpload extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
+    }
+    @container (max-width: 280px) {
+      .drop {
+        padding: 18px 12px;
+      }
+      .title {
+        font-size: 0.86rem;
+      }
+    }
+    li {
+      overflow-wrap: anywhere;
     }
     .drop {
       all: unset;

@@ -1,5 +1,7 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
+import './hamburger.js';
 
 export interface CtkNavLink {
   label: string;
@@ -12,20 +14,49 @@ export interface CtkNavLink {
  * a thick bottom rule under the active item. Pass `links` or slot your
  * own markup; slotted content renders after the generated links.
  *
+ * When the nav is narrower than 560px (measured from its own width, via
+ * container queries) the links collapse into a `<ctk-hamburger>` menu.
+ * Slotted content only shows in the wide layout, because a slot can only
+ * render once.
+ *
  * @fires ctk-nav - detail: `{ label: string; href?: string }`, fired when
  *   a generated link is clicked (not fired for slotted content).
  */
 @customElement('ctk-top-nav')
 export class CtkTopNav extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      container-type: inline-size;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     nav {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 22px;
+      gap: 10px 22px;
+    }
+    .narrow {
+      display: none;
+    }
+    .drawer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 0;
+    }
+    .drawer-links a {
+      padding: 10px 4px;
+      font-size: 1rem;
+    }
+    @container (max-width: 560px) {
+      .wide {
+        display: none;
+      }
+      .narrow {
+        display: block;
+      }
     }
     a {
       position: relative;
@@ -59,20 +90,27 @@ export class CtkTopNav extends LitElement {
 
   render() {
     return html`
-      <nav>
-        ${this.links.map(
-          (link) => html`
-            <a
-              href=${link.href ?? '#'}
-              class=${link.active ? 'active' : ''}
-              aria-current=${link.active ? 'page' : nothing}
-              @click=${(e: Event) => this.#onClick(e, link)}
-              >${link.label}</a
-            >
-          `,
-        )}
+      <nav class="wide">
+        ${this.links.map((link) => this.#link(link))}
         <slot></slot>
       </nav>
+      <div class="narrow">
+        <ctk-hamburger label="Menu">
+          <div class="drawer-links">${this.links.map((link) => this.#link(link))}</div>
+        </ctk-hamburger>
+      </div>
+    `;
+  }
+
+  #link(link: CtkNavLink) {
+    return html`
+      <a
+        href=${link.href ?? '#'}
+        class=${link.active ? 'active' : ''}
+        aria-current=${link.active ? 'page' : nothing}
+        @click=${(e: Event) => this.#onClick(e, link)}
+        >${link.label}</a
+      >
     `;
   }
 

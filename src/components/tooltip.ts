@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 export type CtkTooltipPlacement = 'top' | 'bottom';
 
@@ -15,15 +16,19 @@ export type CtkTooltipPlacement = 'top' | 'bottom';
 @customElement('ctk-tooltip')
 export class CtkTooltip extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
       position: relative;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
     .bubble {
       position: absolute;
       left: 50%;
       transform: translate(-50%, 0);
+      width: max-content;
+      max-width: min(240px, 70vw);
       padding: 6px 10px;
       border: 2px solid var(--ctk-panel-ink, #1a1725);
       border-radius: var(--ctk-radius-card, 6px);
@@ -31,7 +36,9 @@ export class CtkTooltip extends LitElement {
       color: var(--ctk-bg-soft, #ffffff);
       font-size: 0.78rem;
       font-weight: 600;
-      white-space: nowrap;
+      line-height: 1.35;
+      text-align: center;
+      white-space: normal;
       pointer-events: none;
       opacity: 0;
       visibility: hidden;

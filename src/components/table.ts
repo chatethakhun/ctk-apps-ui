@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 export interface CtkTableColumn {
   key: string;
@@ -22,13 +23,18 @@ type SortDirection = 'asc' | 'desc';
 @customElement('ctk-table')
 export class CtkTable extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
+      max-width: 100%;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
       color: var(--ctk-ink, #2b2740);
     }
+    /* The table scrolls sideways inside its own frame when space runs out. */
     .wrap {
+      max-width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border: 2.5px solid var(--ctk-panel-ink, #1a1725);
       border-radius: var(--ctk-radius-card, 6px);
       background: var(--ctk-bg-soft, #ffffff);
@@ -43,8 +49,16 @@ export class CtkTable extends LitElement {
     td {
       padding: 10px 14px;
       text-align: left;
+      vertical-align: top;
       border-bottom: 1.5px solid var(--ctk-panel-ink-tint, rgba(26, 23, 37, 0.1));
+    }
+    th {
       white-space: nowrap;
+    }
+    /* Body cells wrap at a readable measure rather than stretching the row. */
+    td {
+      max-width: 28ch;
+      min-width: 8ch;
     }
     thead th {
       font-family: var(--ctk-font-display, 'Bangers', sans-serif);

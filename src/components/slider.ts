@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-slider>` — a range input styled to the comic-panel look. The filled
@@ -13,6 +14,7 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('ctk-slider')
 export class CtkSlider extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -20,8 +22,10 @@ export class CtkSlider extends LitElement {
     }
     .head {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: baseline;
+      gap: 4px 12px;
       margin-bottom: 8px;
       font-size: 0.82rem;
       font-weight: 700;

@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 export interface CtkBreadcrumbItem {
   label: string;
@@ -16,6 +17,7 @@ export interface CtkBreadcrumbItem {
 @customElement('ctk-breadcrumb')
 export class CtkBreadcrumb extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -25,7 +27,7 @@ export class CtkBreadcrumb extends LitElement {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      gap: 4px 8px;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -34,6 +36,12 @@ export class CtkBreadcrumb extends LitElement {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      max-width: 100%;
+      min-width: 0;
+    }
+    li span,
+    li a {
+      min-width: 0;
     }
     li + li::before {
       content: '›';

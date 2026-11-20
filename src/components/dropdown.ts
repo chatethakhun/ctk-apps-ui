@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { setPresence } from '../motion.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-dropdown>` — a trigger button that opens a menu of actions.
@@ -16,8 +17,10 @@ import { setPresence } from '../motion.js';
 @customElement('ctk-dropdown')
 export class CtkDropdown extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: inline-block;
+      max-width: 100%;
       position: relative;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
     }
@@ -60,6 +63,8 @@ export class CtkDropdown extends LitElement {
       top: calc(100% + 8px);
       left: 0;
       min-width: 180px;
+      /* Keep the menu on screen on narrow phones. */
+      max-width: min(280px, calc(100vw - 32px));
       margin: 0;
       padding: 6px;
       list-style: none;

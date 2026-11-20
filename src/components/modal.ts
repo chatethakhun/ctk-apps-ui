@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { lockScroll, unlockScroll } from '../scroll-lock.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-modal>` — a dialog panel built on the native `<dialog>`, so focus
@@ -15,6 +16,7 @@ import { lockScroll, unlockScroll } from '../scroll-lock.js';
 @customElement('ctk-modal')
 export class CtkModal extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: contents;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -26,6 +28,9 @@ export class CtkModal extends LitElement {
       color: var(--ctk-ink, #2b2740);
       padding: 0;
       width: min(480px, calc(100vw - 32px));
+      max-width: calc(100vw - 32px);
+      max-height: calc(100dvh - 32px);
+      overflow-y: auto;
       box-shadow: 6px 6px 0 var(--ctk-panel-ink, #1a1725);
     }
     dialog::backdrop {
@@ -92,9 +97,21 @@ export class CtkModal extends LitElement {
     }
     footer {
       display: flex;
+      flex-wrap: wrap;
       justify-content: flex-end;
       gap: 10px;
       padding: 0 18px 18px;
+    }
+    slot[name='footer']::slotted(*) {
+      max-width: 100%;
+    }
+    @media (max-width: 380px) {
+      footer {
+        justify-content: stretch;
+      }
+      slot[name='footer']::slotted(*) {
+        flex: 1 1 100%;
+      }
     }
     .close {
       all: unset;

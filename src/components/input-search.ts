@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { baseStyles } from '../shared-styles.js';
 
 /**
  * `<ctk-input-search>` — a search field with a leading icon and a clear
@@ -13,6 +14,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 @customElement('ctk-input-search')
 export class CtkInputSearch extends LitElement {
   static styles = css`
+    ${baseStyles}
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
@@ -21,6 +23,11 @@ export class CtkInputSearch extends LitElement {
       position: relative;
       display: flex;
       align-items: center;
+      min-width: 0;
+    }
+    input {
+      min-width: 0;
+      text-overflow: ellipsis;
     }
     .icon {
       position: absolute;

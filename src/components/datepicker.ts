@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { setPresence } from '../motion.js';
+import { baseStyles } from '../shared-styles.js';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -39,12 +40,20 @@ function fmtShort(d: Date) {
 @customElement('ctk-datepicker')
 export class CtkDatepicker extends LitElement {
   static styles = css`
+    ${baseStyles}
     [hidden] {
       display: none !important;
     }
     :host {
       display: block;
       font-family: var(--ctk-font-body, 'Poppins', sans-serif);
+    }
+    .current {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .field {
       display: flex;
@@ -120,6 +129,7 @@ export class CtkDatepicker extends LitElement {
       top: calc(100% + 10px);
       z-index: 30;
       width: 290px;
+      max-width: min(290px, calc(100vw - 32px));
       background: var(--ctk-bg-soft, #ffffff);
       border: 2.5px solid var(--ctk-panel-ink, #1a1725);
       border-radius: 6px;
@@ -221,9 +231,10 @@ export class CtkDatepicker extends LitElement {
     }
     .actions {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px 10px;
       margin-top: 12px;
       padding-top: 10px;
       border-top: 2px solid var(--ctk-panel-ink, #1a1725);
