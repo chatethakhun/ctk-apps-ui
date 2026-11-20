@@ -34,3 +34,4 @@ export * from './components/stepper.js';
 export * from './components/number-field.js';
 export * from './components/slider.js';
 export * from './components/step-progress.js';
+export * from './components/carousel.js';
